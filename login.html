@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Project - Group (?): Project Title </title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+<div class="header">
+<h1>Project Title</h1>
+</div>
+
+<div class="row">
+  <div class="col-3 col-s-3 menu">
+    <ul>
+      <li><a href='index.html'> Home </a> </li>
+      <li><a href='about.html'> About </a> </li>
+      <li><a href='contact.html'> Contact </a> </li>
+      <li><a href='login.html'> User Login </a> </li>
+    </ul>
+  </div>
+
+  <div class="col-6 col-s-9">
+    <h1> User login </h1>
+     <form>
+     <table>
+     <tr>
+        <td><label> Username: </label></td><td> <input type="text" id="username"></td> 
+     </tr>
+     <tr>
+        <td><label> Password:</label></td><td> <input type="password" id="password" minlength="10"></td>
+     </tr>
+     <tr>
+        <td>&nbsp;</td><td> <input type="checkbox" onclick="ShowPassword()">Show Password</td>
+     </tr>
+        <!-- set button onClick method to call the function you want to handle this! -->
+     <tr>
+        <td><button type="button" onclick="callAPI(document.getElementById('username').value, document.getElementById('password').value)"> Login </button></td><td>&nbsp;</td>   
+     </tr>
+     </form>
+  </table>
+  <p class="small"> Forgot your password? Click <a class="body" href="">here</a> to reset.</p>
+  <p class="small"> You do not have an account? Click <a class="body" href="">here</a> to register. </p>
+
+  </div>
+
+  <div class="col-3 col-s-12">
+    <div class="aside">
+      <h2>What?</h2>
+      <p>Explain the project you are you trying to build.</p>
+      <h2>Why?</h2>
+      <p>Explain the reason of your interest in this work.</p>
+      <h2>How?</h2>
+      <p>Explain your plans for the project.</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p> The provided CSS responds to different window sizes and device sizes. While you are not required to work on the asthetics of your project for grade, you may want to improve it if you are trying to build a real web system. </p>
+</div>
+<script>
+function ShowPassword() {
+  var x = document.getElementById("password");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+} 
+</script>
+
+</body>
+</html>
