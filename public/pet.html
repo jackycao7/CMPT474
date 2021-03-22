@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title> Project - Group (?): Petfindr </title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+
+<body>
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">Petfindr</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Listings</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="create.html">Make a Post</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Found a Pet</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+        </ul>
+        </div>
+      </div>
+  </nav>
+
+  <main>
+    <div class="px-5 py-4 bg-light">
+      <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Listings</a></li>
+          <li id="breadcrumbName" class="breadcrumb-item active" aria-current="page">Pet Name</li>
+        </ol>
+      </nav>
+
+      <div class="container">
+  
+        <div class="row">
+          <div class="col-sm">
+            <img id="petImage" class="img-fluid rounded">
+          </div>
+
+          <div class="col-md">
+            <h1 class="display-1" id="petName">Pet Name</h1>
+            <p class="lead" id="petDescription">
+              Description
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <h1 class="display-5 py-4" id="petName">Details</h1>
+
+            <dl class="row">
+              <dt class="col-sm-3">Status</dt>
+              <dd id="status" class="col-sm-9">Status</dd>
+
+              <dt class="col-sm-3">Date Posted</dt>
+              <dd id="datePosted" class="col-sm-9">Date</dd>
+
+              <dt class="col-sm-3">City</dt>
+              <dd id="city" class="col-sm-9">City Name</dd>
+
+              <h1 class="display-5 py-4" id="petName">Map</h1>
+              <p class="lead" id="petDescription">Work in progress</p>
+
+              <h1 class="display-5 py-4" id="petName">Contact</h1>
+              <button type="button" class="btn btn-outline-primary btn-lg">Contact Poster</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+
+  let breadcrumbName = document.getElementById("breadcrumbName");
+  let petHeader = document.getElementById("petName");
+  let petImage = document.getElementById("petImage");
+  let petDescription = document.getElementById("petDescription");
+  let petStatus = document.getElementById("status");
+  let petDatePosted = document.getElementById("datePosted");
+  let petCity = document.getElementById("city");
+
+  breadcrumbName.textContent = "Pet " + urlParams.get('id');
+  petHeader.textContent = "Pet " + urlParams.get('id');
+  petImage.src = "cat.jpg";
+  petDescription.textContent = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales fringilla lacus sit amet egestas. Nulla dictum neque non massa pretium, et varius sem malesuada. Etiam fermentum neque vel sem sagittis feugiat in porta turpis. Nullam ac tortor ultrices, venenatis augue ut, lacinia mauris. In hac habitasse platea dictumst. Aenean est nulla, sagittis ut sapien non, scelerisque feugiat quam. Nunc fringilla placerat est nec condimentum. In vel finibus magna.";
+  petStatus.textContent = "Lost";
+  petDatePosted.textContent = new Date(Date.now()).toUTCString();
+  petCity.textContent = "Burnaby, BC";
+
+</script>
+</html>
