@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title> Project - Group (?): Petfindr </title>
+  <title> Project - Group (7): Petfindr </title>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -69,30 +69,52 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
 <script>
-  let listing = document.getElementById("listing");
+  async function fetchListings(){
+    let url = "https://purbbcv5e1.execute-api.us-east-1.amazonaws.com/dev";
+    const response = await fetch(url, {
+      method: 'GET', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    })
+      .then(res => res.json())
+      .then(data => {
+        let postings = data.body.postings;
+        let listing = document.getElementById("listing");
 
-  for(let i = 1; i < 10; i++){
-    let petItem = document.getElementById("pet-0").cloneNode(true);
+        for(let i = 1; i < data.body.numPostings; i++){
+          let petItem = document.getElementById("pet-0").cloneNode(true);
 
-    petItem.id = "pet-" + i;
-    listing.appendChild(petItem);
+          petItem.id = "pet-" + i;
+          listing.appendChild(petItem);
 
-    // Pet Name: change to data.pet[i].name
-    document.querySelector("#pet-" + i + " > div > div > p").innerHTML = "Pet " + i;
+          // Pet Name: change to data.pet[i].name
+          document.querySelector("#pet-" + i + " > div > div > p").textContent = postings[i].petName;
 
-    // href: id={ 1, 2, ... } query will allow us to fetch rest of data based on postingUUID
-    document.querySelector("#pet-" + i + " > div > div > div > button").onclick = () => { 
-      window.location.href = "pet.html" + "?id=" + i;
-    }
+          // href: id={ 1, 2, ... } query will allow us to fetch rest of data based on postingUUID
+          document.querySelector("#pet-" + i + " > div > div > div > button").onclick = () => { 
+            window.location.href = "pet.html" + "?id=" + postings[i].UUID;
+          }
 
-    // Pet image
-    document.querySelector("#pet-" + i + "> div > img").src = "cat.jpg";
+          // Pet image
+          document.querySelector("#pet-" + i + "> div > img").src = "cat.jpg";
 
-    // Location text
-    document.querySelector("#pet-" + i + " > div > div > div > small").innerHTML = "Location " + i;
+          // Location text
+          document.querySelector("#pet-" + i + " > div > div > div > small").textContent = postings[i].animalType;
+        }
+      })
+      .then(() =>{
+        let petItem = document.getElementById("pet-0");
+        petItem.parentNode.removeChild(petItem);
+      })
   }
 
-  let petItem = document.getElementById("pet-0");
-  petItem.parentNode.removeChild(petItem);
+  fetchListings();
+
 </script>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title> Project - Group (?): Petfindr </title>
+  <title> Project - Group (7): Petfindr </title>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -101,13 +101,33 @@
   let petDatePosted = document.getElementById("datePosted");
   let petCity = document.getElementById("city");
 
-  breadcrumbName.textContent = "Pet " + urlParams.get('id');
-  petHeader.textContent = "Pet " + urlParams.get('id');
-  petImage.src = "cat.jpg";
-  petDescription.textContent = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales fringilla lacus sit amet egestas. Nulla dictum neque non massa pretium, et varius sem malesuada. Etiam fermentum neque vel sem sagittis feugiat in porta turpis. Nullam ac tortor ultrices, venenatis augue ut, lacinia mauris. In hac habitasse platea dictumst. Aenean est nulla, sagittis ut sapien non, scelerisque feugiat quam. Nunc fringilla placerat est nec condimentum. In vel finibus magna.";
-  petStatus.textContent = "Lost";
-  petDatePosted.textContent = new Date(Date.now()).toUTCString();
-  petCity.textContent = "Burnaby, BC";
+  async function fetchListing(){
+    let url = `https://purbbcv5e1.execute-api.us-east-1.amazonaws.com/dev/${urlParams.get('id')}`;
+    console.log(url)
+    const response = await fetch(url, {
+      method: 'GET', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    })
+      .then(res => res.json())
+      .then(data => {
+          console.log(data)
+          // breadcrumbName.textContent = data.body.petName;
+          // petHeader.textContent = data.body.petName;
+          // petImage.src = "cat.jpg";
+          // petDescription.textContent = data.body.description;
+          // petStatus.textContent = data.body.postingType;
+          // petDatePosted.textContent = data.body.datePosted;
+          // petCity.textContent = data.body.city;
+      })
+  }
 
+  fetchListing();
 </script>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title> Project - Group (?): Petfindr </title>
+  <title> Project - Group (7): Petfindr </title>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -65,8 +65,8 @@
         </div>        
 
         <div class="form-group my-2">
-          <label for="petAddress">Address</label>
-          <input id="petAddress" type="petAddress" class="form-control"  placeholder="Address where you found the animal.">
+          <label for="petCity">City</label>
+          <input id="petCity" type="petCity" class="form-control"  placeholder="City where you lost the animal.">
         </div>
 
         <div class="form-group my-2">
@@ -92,7 +92,7 @@
 <script>
   let petName = document.getElementById("petName");
   let petDescription = document.getElementById("petDescription");
-  let petAddress = document.getElementById("petAddress");
+  let petCity = document.getElementById("petCity");
   let userEmail = document.getElementById("userEmail");
   let userPhone = document.getElementById("userPhone");
 
@@ -100,7 +100,7 @@
     let petObject = {
       'petName': petName.value,
       'description': petDescription.value,
-      'coordinates': petAddress.value,
+      'city': petCity.value,
       'contactEmail': userEmail.value,
       'contactPhoneNumber': userPhone.value,
       'token': null
@@ -133,6 +133,33 @@
     .then(response => response.text())
     .then(result => alert(JSON.parse(result).body))
     .catch(error => console.log('error', error));
+  }
+
+  async function postObject2(){
+    let url = "";
+
+    let data = {
+      'petName': petName.value,
+      'description': petDescription.value,
+      'city': petCity.value,
+      'contactEmail': userEmail.value,
+      'contactPhoneNumber': userPhone.value,
+      'token': null
+    }
+
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then(res => console.log(res));
+    return response.json(); // parses JSON response into native JavaScript objects
   }
 </script>
 </html>
