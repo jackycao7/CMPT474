@@ -101,8 +101,9 @@
   let petDatePosted = document.getElementById("datePosted");
   let petCity = document.getElementById("city");
 
+  // FIX THIS SO THAT IT FETCHES BY UUID instead of finding from listings
   async function fetchListing(){
-    let url = `https://purbbcv5e1.execute-api.us-east-1.amazonaws.com/dev/${urlParams.get('id')}`;
+    let url = `https://purbbcv5e1.execute-api.us-east-1.amazonaws.com/dev`;
     console.log(url)
     const response = await fetch(url, {
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
@@ -117,14 +118,15 @@
     })
       .then(res => res.json())
       .then(data => {
-          console.log(data)
-          // breadcrumbName.textContent = data.body.petName;
-          // petHeader.textContent = data.body.petName;
-          // petImage.src = "cat.jpg";
-          // petDescription.textContent = data.body.description;
-          // petStatus.textContent = data.body.postingType;
-          // petDatePosted.textContent = data.body.datePosted;
-          // petCity.textContent = data.body.city;
+          let pet = data.body.postings.find(x => x.UUID === urlParams.get('id'));
+
+          breadcrumbName.textContent = pet.petName;
+          petHeader.textContent = pet.petName;
+          petImage.src = "cat.jpg";
+          petDescription.textContent = pet.description;
+          petStatus.textContent = pet.postingType;
+          petDatePosted.textContent = pet.datePosted;
+          petCity.textContent = pet.city;
       })
   }
 
