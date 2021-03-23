@@ -44,7 +44,7 @@
 
         <div id="listing" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-          <div id="pet-0" class="col">
+          <div id="pet-template" class="col">
             <div class="card shadow-sm">
               <img class="rounded">
   
@@ -70,7 +70,7 @@
 
 <script>
   async function fetchListings(){
-    let url = "https://purbbcv5e1.execute-api.us-east-1.amazonaws.com/dev";
+    let url = "https://iacfkqy4b5.execute-api.us-east-1.amazonaws.com/dev";
     const response = await fetch(url, {
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
@@ -86,9 +86,11 @@
       .then(data => {
         let postings = data.body.postings;
         let listing = document.getElementById("listing");
+        console.log(data.body.numPostings)
+        console.log(postings)
 
-        for(let i = 1; i < data.body.numPostings; i++){
-          let petItem = document.getElementById("pet-0").cloneNode(true);
+        for(let i = 0; i < data.body.numPostings; i++){
+          let petItem = document.getElementById("pet-template").cloneNode(true);
 
           petItem.id = "pet-" + i;
           listing.appendChild(petItem);
@@ -109,12 +111,11 @@
         }
       })
       .then(() =>{
-        let petItem = document.getElementById("pet-0");
+        let petItem = document.getElementById("pet-template");
         petItem.parentNode.removeChild(petItem);
       })
   }
 
   fetchListings();
-
 </script>
 </html>

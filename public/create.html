@@ -55,6 +55,11 @@
         </div>
 
         <div class="form-group my-2">
+          <label for="petType">Animal Type</label>
+          <input id="petType" type="petType" class="form-control" placeholder="Animal (dog, cat, etc.)"></input>
+        </div>
+
+        <div class="form-group my-2">
           <label for="petDescription">Description</label>
           <textarea id="petDescription" type="petDescription" class="form-control" placeholder="Describe the pet (size, colour, breed, etc.)"></textarea>
         </div>
@@ -80,7 +85,7 @@
         </div>
       </form>
 
-      <button type="submit" class="btn btn-primary g-recaptcha" onclick="postObject()">Submit</button>
+      <button id="submitBtn" type="submit" class="btn btn-primary g-recaptcha" onclick="postObject2()">Submit</button>
     </div>
   </main>
 
@@ -91,11 +96,15 @@
 
 <script>
   let petName = document.getElementById("petName");
+  let animalType = document.getElementById("petType");
   let petDescription = document.getElementById("petDescription");
   let petCity = document.getElementById("petCity");
   let userEmail = document.getElementById("userEmail");
   let userPhone = document.getElementById("userPhone");
 
+  let submitBtn = document.getElementById("submitBtn");
+
+  // captcha not implemented yet, WIP
   function postObject(){
     let petObject = {
       'petName': petName.value,
@@ -116,7 +125,7 @@
     });
   }
 
-  var callCaptchaAPI = (petObject)=> {
+  var callCaptchaAPI = (petObject) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify(petObject);
@@ -129,22 +138,26 @@
     };
 
     // Replace url with your own instance of the API
-    fetch("https://29wkvb4vs3.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
+    fetch("https://iacfkqy4b5.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
     .then(response => response.text())
     .then(result => alert(JSON.parse(result).body))
     .catch(error => console.log('error', error));
   }
 
+  // without captcha
   async function postObject2(){
-    let url = "";
+    let url = "https://iacfkqy4b5.execute-api.us-east-1.amazonaws.com/dev";
 
     let data = {
-      'petName': petName.value,
-      'description': petDescription.value,
-      'city': petCity.value,
       'contactEmail': userEmail.value,
-      'contactPhoneNumber': userPhone.value,
-      'token': null
+      'contactPhone': userPhone.value,
+      'city': petCity.value,
+      'description': petDescription.value,
+      'postingType': "Lost",
+      'dateLostFound': Date.now(), // change this to a calendar date picker thing
+      'coordinates': [0,0],
+      'petName': petName.value,
+      'animalType': animalType.value,
     }
 
     const response = await fetch(url, {
@@ -158,8 +171,18 @@
       redirect: 'follow', // manual, *follow, error
       referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
       body: JSON.stringify(data) // body data type must match "Content-Type" header
-    }).then(res => console.log(res));
-    return response.json(); // parses JSON response into native JavaScript objects
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      submitBtn.classList.add("disabled");
+      submitBtn.textContent = "Posting Created";
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      submitBtn.classList.add("disabled");
+      submitBtn.textContent = "Error";
+    });
   }
 </script>
 </html>
