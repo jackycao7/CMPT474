@@ -44,7 +44,7 @@
 
         <div id="listing" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-          <div id="pet-template" class="col">
+          <div id="pet-template" class="col" style="visibility: hidden;">
             <div class="card shadow-sm">
               <img class="rounded">
   
@@ -67,11 +67,16 @@
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<script src="./api.js"></script>
 
 <script>
+  function removeTemplate(){
+    let petItem = document.getElementById("pet-template");
+    petItem.parentNode.removeChild(petItem);
+  }
+
   async function fetchListings(){
-    let url = "https://iacfkqy4b5.execute-api.us-east-1.amazonaws.com/dev";
-    const response = await fetch(url, {
+    const response = await fetch(api_url, {
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -86,33 +91,37 @@
       .then(data => {
         let postings = data.body.postings;
         let listing = document.getElementById("listing");
-        console.log(data.body.numPostings)
         console.log(postings)
 
-        for(let i = 0; i < data.body.numPostings; i++){
-          let petItem = document.getElementById("pet-template").cloneNode(true);
+        if(data.body.numPostings > 0){
+          for(let i = 0; i < data.body.numPostings; i++){
+            let petItem = document.getElementById("pet-template").cloneNode(true);
 
-          petItem.id = "pet-" + i;
-          listing.appendChild(petItem);
+            petItem.id = "pet-" + i;
+            petItem.style.visibility = "visible";
+            listing.appendChild(petItem);
 
-          // Pet Name: change to data.pet[i].name
-          document.querySelector("#pet-" + i + " > div > div > p").textContent = postings[i].petName;
+            // Pet Name: change to data.pet[i].name
+            document.querySelector("#pet-" + i + " > div > div > p").textContent = postings[i].petName;
 
-          // href: id={ 1, 2, ... } query will allow us to fetch rest of data based on postingUUID
-          document.querySelector("#pet-" + i + " > div > div > div > button").onclick = () => { 
-            window.location.href = "pet.html" + "?id=" + postings[i].UUID;
+            // href: id={ 1, 2, ... } query will allow us to fetch rest of data based on postingUUID
+            document.querySelector("#pet-" + i + " > div > div > div > button").onclick = () => { 
+              window.location.href = "pet.html" + "?id=" + postings[i].UUID;
+            }
+
+            // Pet image
+            document.querySelector("#pet-" + i + "> div > img").src = "cat.jpg";
+
+            // Location text
+            document.querySelector("#pet-" + i + " > div > div > div > small").textContent = postings[i].animalType;
           }
-
-          // Pet image
-          document.querySelector("#pet-" + i + "> div > img").src = "cat.jpg";
-
-          // Location text
-          document.querySelector("#pet-" + i + " > div > div > div > small").textContent = postings[i].animalType;
+        }
+        else{
+          removeTemplate();
         }
       })
       .then(() =>{
-        let petItem = document.getElementById("pet-template");
-        petItem.parentNode.removeChild(petItem);
+        removeTemplate();
       })
   }
 
