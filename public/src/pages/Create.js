@@ -20,12 +20,12 @@ import GoogleMapReact from 'google-map-react';
 
 export default function Create() {
   const [petName, setPetName] = useState("");
-  const [animalType, setAnimalType] = useState("");
+  const [animalType, setAnimalType] = useState("Cat");
   const [description, setDescription] = useState("");
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState("Vancouver");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [postingType, setPostingType] = useState("");
+  const [postingType, setPostingType] = useState("Lost");
 
   // Coordinates
   const [latitude, setLat] = useState(49);
@@ -45,22 +45,39 @@ export default function Create() {
     r.readAsDataURL(event.target.files[0]);
   }
 
-  async function postDetails(){
+  function checkMissingAttributes(){
     let postObj = {
-      'contactEmail': email,
-      'contactPhone': phone,
-      'city': city,
-      'description': description,
-      'postingType': postingType,
-      'dateLostFound': Date.now(),
-      'coordinates': [latitude, longitude],
-      'petName': petName,
-      'animalType': animalType,
-      'imgKey': imgKey
+        'contactEmail': email,
+        'contactPhone': phone,
+        'city': city,
+        'description': description,
+        'postingType': postingType,
+        'dateLostFound': Date.now(),
+        'coordinates': [latitude, longitude],
+        'petName': petName,
+        'animalType': animalType,
+        'imgKey': imgKey
     }
 
-    console.log(postObj);
+    var missingAttribute = false;
+    for (var attribute in postObj) {
+        if (attribute != "imgKey" && attribute != "description" && postObj[attribute] == "") {
+            missingAttribute = true;
+        }
+    }
+
+    if (missingAttribute) {
+        return null;
+    }
+    else {
+        console.log("missing attributes function", postObj);
+        return postObj;
+    }
+  }
+
+  async function postDetails(postObj){ 
     setBtnState(true);
+    console.log(postObj);
     
     await fetch(api.gateway, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -78,10 +95,6 @@ export default function Create() {
     .then(data => {
       console.log('Success:', data);
     })
-
-    // else{
-    //   alert("Form is incomplete");
-    // }
   }
 
   async function postImage(){
@@ -247,8 +260,17 @@ export default function Create() {
         </Col>
         
         <Button disabled={btnIsDisabled} onClick={async() => {
-            await postImage();
-            await postDetails();
+            var postObj = checkMissingAttributes();
+            console.log("postobj", postObj);
+            
+            if (postObj != null) {
+                await postImage();
+                console.log("imgkey", imgKey);
+                await postDetails(postObj);
+            }
+            else {
+                alert("Form is incomplete");
+            }
           }}
         >
           Submit
