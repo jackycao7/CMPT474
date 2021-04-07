@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title> Project - Group (7): Petfindr </title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+
+<body>
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">Petfindr</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Listings</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="create.html">Make a Post</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Found a Pet</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+        </ul>
+        </div>
+      </div>
+  </nav>
+
+  <main>
+    <div class="px-5 py-4 bg-light">
+      <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Listings</a></li>
+          <li id="breadcrumbName" class="breadcrumb-item active" aria-current="page">Create a posting</li>
+        </ol>
+      </nav>
+
+      <h1 class="display-5">Post Details</h1>
+
+      <form class="my-4">
+        <div class="form-group my-2">
+          <label for="petNameInput">Pet Name</label>
+          <input id="petName" type="email" class="form-control" id="petNameInput" aria-describedby="petNameHelp" placeholder="Pet Name">
+          <small id="petNameHelp" class="form-text text-muted">If there is no name on the collar, please try to name the animal.</small>
+        </div>
+
+        <div class="form-group my-2">
+          <label for="petType">Animal Type</label>
+          <input id="petType" type="petType" class="form-control" placeholder="Animal (dog, cat, etc.)"></input>
+        </div>
+
+        <div class="form-group my-2">
+          <label for="petDescription">Description</label>
+          <textarea id="petDescription" type="petDescription" class="form-control" placeholder="Describe the pet (size, colour, breed, etc.)"></textarea>
+        </div>
+
+        <img id="imgPreview" src="">
+
+        <div class="form-group my-2">
+          <label for="inputFile">Upload an image</label>
+          <input type="file" class="form-control" id="inputFile" accept="image/*" onchange="previewImage(event)">
+        </div>        
+
+        <div class="form-group my-2">
+          <label for="petCity">City</label>
+          <input id="petCity" type="petCity" class="form-control"  placeholder="City where you lost the animal.">
+        </div>
+
+        <div class="form-group my-2">
+          <label for="userEmail">Email address</label>
+          <input id="userEmail" type="email" class="form-control" placeholder="name@domain.com">
+        </div>
+
+        <div class="form-group my-2">
+          <label for="userPhone">Phone Number</label>
+          <input id="userPhone" type="email" class="form-control" placeholder="123 456 7890">
+        </div>
+      </form>
+
+      <button id="submitBtn" type="submit" class="btn btn-primary g-recaptcha" onclick="postObject2()">Submit</button>
+    </div>
+  </main>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-"></script>
+
+<script src="./api.js"></script>
+
+<script>
+  let petName = document.getElementById("petName");
+  let animalType = document.getElementById("petType");
+  let petDescription = document.getElementById("petDescription");
+  let petCity = document.getElementById("petCity");
+  let userEmail = document.getElementById("userEmail");
+  let userPhone = document.getElementById("userPhone");
+
+  let imgInput = document.getElementById('inputFile')
+  let imgPreview = document.getElementById("imgPreview")
+
+  let submitBtn = document.getElementById("submitBtn");
+
+  // Trigger: selection of an image via file input
+  function previewImage(event){
+    let r = new FileReader();
+    r.onload = function(){
+      imgPreview.src = r.result;
+    }
+    r.readAsDataURL(event.target.files[0]);
+  }
+
+  // captcha not implemented yet, WIP
+  function postObject(){
+    let petObject = {
+      'petName': petName.value,
+      'description': petDescription.value,
+      'city': petCity.value,
+      'contactEmail': userEmail.value,
+      'contactPhoneNumber': userPhone.value,
+      'token': null
+    }
+    console.log(petObject);
+
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-', {action: 'submit'}).then(function(token) {
+            // After creating a token, send it to Lambda function to verify and act based on captcha score
+            petObject.token = token;
+            callCaptchaAPI(petObject);
+        });
+    });
+  }
+
+  var callCaptchaAPI = (petObject) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify(petObject);
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+
+    // Replace url with your own instance of the API
+    fetch(api_url, requestOptions)
+    .then(response => response.text())
+    .then(result => alert(JSON.parse(result).body))
+    .catch(error => console.log('error', error));
+  }
+
+  // without captcha
+  async function postObject2(){
+    let data = {
+      'contactEmail': userEmail.value,
+      'contactPhone': userPhone.value,
+      'city': petCity.value,
+      'description': petDescription.value,
+      'postingType': "Lost",
+      'dateLostFound': Date.now(), // change this to a calendar date picker thing
+      'coordinates': [0,0],
+      'petName': petName.value,
+      'animalType': animalType.value,
+    }
+
+    const response = await fetch(api_url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      submitBtn.classList.add("disabled");
+      submitBtn.textContent = "Posting Created";
+      window.location.href = location.protocol + "//" + location.host + "/index.html";
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      submitBtn.classList.add("disabled");
+      submitBtn.textContent = "Error";
+    });
+  }
+</script>
+</html>
