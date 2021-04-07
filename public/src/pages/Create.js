@@ -266,7 +266,7 @@ export default function Create() {
             if (postObj != null) {
                 await postImage();
                 console.log("imgkey", imgKey);
-                postObj.imkey = imgKey;
+                postObj.imgkey = imgKey;
                 await postDetails(postObj);
             }
             else {
