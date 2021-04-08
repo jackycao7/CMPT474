@@ -26,6 +26,7 @@ export default function Create() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [postingType, setPostingType] = useState("Lost");
+  const [captchaToken, setCaptchaToken] = useState("");
 
   // Coordinates
   const [latitude, setLat] = useState(49);
@@ -56,12 +57,13 @@ export default function Create() {
         'coordinates': [latitude, longitude],
         'petName': petName,
         'animalType': animalType,
-        'imgKey': imgKey
+        'imgKey': imgKey,
+        'token': ""
     }
 
     var missingAttribute = false;
     for (var attribute in postObj) {
-        if (attribute != "imgKey" && attribute != "description" && postObj[attribute] == "") {
+        if (attribute != "imgKey" && attribute != "description" && attribute != "token" && postObj[attribute] == "") {
             missingAttribute = true;
         }
     }
@@ -161,6 +163,33 @@ export default function Create() {
       identityPoolId: api.IdentityPoolId
     })
   });
+
+  async function getCaptchaToken() {
+    var captchaToken = null;
+    await new Promise(function(resolve, reject) {
+      window.grecaptcha.ready(() => {
+        window.grecaptcha.execute('6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-', {action: 'submit'}).then(token => {
+          console.log("captcha token", token);
+          if (token) {
+              captchaToken = token;
+              resolve();
+          }
+          else {
+              reject();
+          }
+        });
+      });
+    });
+
+    return captchaToken;
+  }
+
+  useEffect(() => {
+    // Add reCaptcha
+    const script = document.createElement("script")
+    script.src = "https://www.google.com/recaptcha/api.js?render=6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-"
+    document.body.appendChild(script)
+  }, [])
 
   return (
     <Container>
@@ -264,9 +293,10 @@ export default function Create() {
             console.log("postobj", postObj);
             
             if (postObj != null) {
+                postObj.token = await getCaptchaToken();
                 await postImage();
                 console.log("imgkey", imgKey);
-                postObj.imgkey = imgKey;
+                postObj.imgKey = imgKey;
                 await postDetails(postObj);
             }
             else {
