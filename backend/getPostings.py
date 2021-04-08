@@ -18,7 +18,8 @@ def queryTableWithFilters(table, partitionKey, allFilters, lastEvaluatedKey, sor
                             KeyConditionExpression = Key('postingType').eq(partitionKey),
                             FilterExpression = filterExpression,
                             ScanIndexForward = sortDateAscending,
-                            ProjectionExpression = 'contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted'
+                            ProjectionExpression = '#uuid, contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted',
+                            ExpressionAttributeNames = {'#uuid': 'UUID'}
                         )
         else:
             # Query with pagination
@@ -27,7 +28,8 @@ def queryTableWithFilters(table, partitionKey, allFilters, lastEvaluatedKey, sor
                             KeyConditionExpression = Key('postingType').eq(partitionKey),
                             FilterExpression = filterExpression,
                             ScanIndexForward = sortDateAscending,
-                            ProjectionExpression = 'contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted',
+                            ProjectionExpression = '#uuid, contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted',
+                            ExpressionAttributeNames = {'#uuid': 'UUID'},
                             ExclusiveStartKey = lastEvaluatedKey,
                         )
                         
@@ -43,14 +45,16 @@ def queryTableWithoutFilters(table, partitionKey, lastEvaluatedKey, sortDateAsce
                             IndexName = 'postingType-datePosted-index',
                             KeyConditionExpression = Key('postingType').eq(partitionKey),
                             ScanIndexForward = sortDateAscending,
-                            ProjectionExpression = 'contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted'
+                            ProjectionExpression = '#uuid, contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted',
+                            ExpressionAttributeNames = {'#uuid': 'UUID'}
                         )
         else:
              response = table.query(
                             IndexName = 'postingType-datePosted-index',
                             KeyConditionExpression = Key('postingType').eq(partitionKey),
                             ScanIndexForward = sortDateAscending,
-                            ProjectionExpression = 'contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted',
+                            ProjectionExpression = '#uuid, contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted',
+                            ExpressionAttributeNames = {'#uuid': 'UUID'},
                             ExclusiveStartKey = lastEvaluatedKey
                         )
                         
@@ -66,11 +70,12 @@ def getPostingByUUID(table, uuid):
             Key={
                 'UUID': uuid
             },
-            ProjectionExpression = 'contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted'
+            ProjectionExpression = '#uuid, contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted',
+            ExpressionAttributeNames = {'#uuid': 'UUID'}
         )
     except Exception as e:
         raise Exception(e)
-    
+
     statusCode = response['ResponseMetadata']['HTTPStatusCode']
     responseBody = response['Item']
     
