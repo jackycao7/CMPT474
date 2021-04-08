@@ -10,13 +10,6 @@ from updatePosting import *
 from deletePosting import *
 from verifyCaptcha import *
 
-# Fixes TypeError: Object of type Decimal is not JSON serializable
-# https://stackoverflow.com/questions/65309377/typeerror-object-of-type-decimal-is-not-json-serializable
-class Encoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, decimal.Decimal): return float(obj)
-
-
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('Postings')
 
