@@ -164,22 +164,12 @@ export default function Create() {
     })
   });
 
-//   const handleLoaded = _ => {
-//     window.grecaptcha.ready(_ => {
-//       window.grecaptcha
-//         .execute("6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-", { action: "homepage" })
-//         .then(token => {
-//           console.log(token);
-//         })
-//     })
-//   }
-
   async function getCaptchaToken() {
     var captchaToken = null;
     await new Promise(function(resolve, reject) {
       window.grecaptcha.ready(() => {
         window.grecaptcha.execute('6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-', {action: 'submit'}).then(token => {
-          console.log(token);
+          console.log("captcha token", token);
           if (token) {
               captchaToken = token;
               resolve();
@@ -190,6 +180,7 @@ export default function Create() {
         });
       });
     });
+
     return captchaToken;
   }
 
@@ -197,31 +188,11 @@ export default function Create() {
     // Add reCaptcha
     const script = document.createElement("script")
     script.src = "https://www.google.com/recaptcha/api.js?render=6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-"
-    // script.addEventListener("load", handleLoaded)
     document.body.appendChild(script)
   }, [])
 
-//   verifyCallback = (token) => {
-//     // This is the token you send to your backend 
-//     console.log("token: ", token)
-//   }
-
   return (
     <Container>
-        <div
-            className="g-recaptcha"
-            data-sitekey="6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-"
-            data-size="invisible"
-        ></div>
-        {/* <div>
-          <ReCaptcha
-          sitekey={"6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-"}
-          // This must be a string and an example google gives is 'homepage' or 'login'
-          action="createPost"
-        //   verifyCallback={verifyCallback}
-          />
-        </div> */}
-
         <h1 className="display-4">Post Details</h1>
         <Col>
           <Form>
