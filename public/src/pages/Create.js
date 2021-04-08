@@ -80,8 +80,8 @@ export default function Create() {
   async function postDetails(postObj){ 
     setBtnState(true);
     console.log(postObj);
-    
-    await fetch(api.gateway, {
+    let api_url = api.gateway + "postings/create";
+    await fetch(api_url, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
