@@ -26,6 +26,7 @@ export default function Create() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [postingType, setPostingType] = useState("Lost");
+  const [captchaToken, setCaptchaToken] = useState("");
 
   // Coordinates
   const [latitude, setLat] = useState(49);
@@ -56,12 +57,13 @@ export default function Create() {
         'coordinates': [latitude, longitude],
         'petName': petName,
         'animalType': animalType,
-        'imgKey': imgKey
+        'imgKey': imgKey,
+        'token': ""
     }
 
     var missingAttribute = false;
     for (var attribute in postObj) {
-        if (attribute != "imgKey" && attribute != "description" && postObj[attribute] == "") {
+        if (attribute != "imgKey" && attribute != "description" && attribute != "token" && postObj[attribute] == "") {
             missingAttribute = true;
         }
     }
@@ -162,8 +164,56 @@ export default function Create() {
     })
   });
 
+//   const handleLoaded = _ => {
+//     window.grecaptcha.ready(_ => {
+//       window.grecaptcha
+//         .execute("6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-", { action: "homepage" })
+//         .then(token => {
+//           console.log(token);
+//         })
+//     })
+//   }
+
+  const getCaptchaToken = (e) => {
+    e.preventDefault();
+    window.grecaptcha.ready(() => {
+      window.grecaptcha.execute("6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-", { action: 'submit' }).then(token => {
+        // submitData(token);
+        console.log(token);
+        return token;
+      });
+    });
+  }
+
+  useEffect(() => {
+    // Add reCaptcha
+    const script = document.createElement("script")
+    script.src = "https://www.google.com/recaptcha/api.js?render=6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-"
+    // script.addEventListener("load", handleLoaded)
+    document.body.appendChild(script)
+  }, [])
+
+//   verifyCallback = (token) => {
+//     // This is the token you send to your backend 
+//     console.log("token: ", token)
+//   }
+
   return (
     <Container>
+        <div
+            className="g-recaptcha"
+            data-sitekey="6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-"
+            data-size="invisible"
+        ></div>
+        {/* <div>
+          <ReCaptcha
+          sitekey={"6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-"}
+          // This must be a string and an example google gives is 'homepage' or 'login'
+          action="createPost"
+        //   verifyCallback={verifyCallback}
+          />
+        </div> */}
+
         <h1 className="display-4">Post Details</h1>
         <Col>
           <Form>
@@ -261,12 +311,13 @@ export default function Create() {
         
         <Button disabled={btnIsDisabled} onClick={async() => {
             var postObj = checkMissingAttributes();
+            postObj.token = getCaptchaToken();
             console.log("postobj", postObj);
             
             if (postObj != null) {
                 await postImage();
                 console.log("imgkey", imgKey);
-                postObj.imgkey = imgKey;
+                postObj.imgKey = imgKey;
                 await postDetails(postObj);
             }
             else {
