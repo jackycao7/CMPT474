@@ -174,15 +174,23 @@ export default function Create() {
 //     })
 //   }
 
-  const getCaptchaToken = (e) => {
-    e.preventDefault();
-    window.grecaptcha.ready(() => {
-      window.grecaptcha.execute("6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-", { action: 'submit' }).then(token => {
-        // submitData(token);
-        console.log(token);
-        return token;
+  async function getCaptchaToken() {
+    var captchaToken = null;
+    await new Promise(function(resolve, reject) {
+      window.grecaptcha.ready(() => {
+        window.grecaptcha.execute('6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-', {action: 'submit'}).then(token => {
+          console.log(token);
+          if (token) {
+              captchaToken = token;
+              resolve();
+          }
+          else {
+              reject();
+          }
+        });
       });
     });
+    return captchaToken;
   }
 
   useEffect(() => {
@@ -311,10 +319,10 @@ export default function Create() {
         
         <Button disabled={btnIsDisabled} onClick={async() => {
             var postObj = checkMissingAttributes();
-            postObj.token = getCaptchaToken();
             console.log("postobj", postObj);
             
             if (postObj != null) {
+                postObj.token = await getCaptchaToken();
                 await postImage();
                 console.log("imgkey", imgKey);
                 postObj.imgKey = imgKey;
