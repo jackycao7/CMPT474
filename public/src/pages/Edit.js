@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 
 import api from '../api.js'
 
@@ -36,6 +37,10 @@ export default function Create() {
 
   const [btnIsDisabled, setBtnState] = useState(false);
 
+  let { id } = useParams();
+  let api_url_get = api.gateway + "postings?uuid=" + id;
+  let api_url_edit = api.gateway + "postings/edit?uuid=" + id;
+
   function previewImage(event){
     let r = new FileReader();
     r.onload = function(){
@@ -48,12 +53,9 @@ export default function Create() {
     let postObj = {
         'city': city,
         'description': description,
-        'postingType': postingType,
         'coordinates': [latitude, longitude],
         'petName': petName,
         'animalType': animalType,
-        'imgKey': imgKey,
-        'token': ""
     }
 
     var missingAttribute = false;
@@ -72,12 +74,12 @@ export default function Create() {
     }
   }
 
-  async function postDetails(postObj){ 
+  async function postDetails(postObj){
     setBtnState(true);
     console.log(postObj);
     
-    await fetch(api.gateway, {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    await fetch(api_url_edit, {
+      method: 'PUT', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
@@ -159,27 +161,54 @@ export default function Create() {
   }
 
   useEffect(() => {
-    // Add reCaptcha
+    async function getPet(){
+      console.log(api_url_get)
+      await fetch(api_url_get, {
+        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          })
+          .then(res => res.json())
+          .then(data => {
+            console.log(data);
+            let pet = data.body;
+            setPetName(pet.petName);
+            setAnimalType(pet.animalType);
+            setDescription(pet.description);
+            setCity(pet.city);
+            setPostingType(pet.postingType);
+            setLat(pet.coordinates[0]);
+            setLong(pet.coordinates[1]);
+          })
+      }
+      // Add reCaptcha
     const script = document.createElement("script")
     script.src = "https://www.google.com/recaptcha/api.js?render=6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-"
     document.body.appendChild(script)
-  }, [])
+      getPet();
+    }, [])
 
   return (
     <Container>
-        <h1 className="display-4">Edit Post Details</h1>
+        <h1 className="display-4 mt-4">Edit Post Details</h1>
         <Col>
           <Form>
             <Form.Group>
               <Form.Label>Pet Name</Form.Label>
-              <Form.Control type="text" placeholder="asdf" onChange={(e) => setPetName(e.target.value)} />
+              <Form.Control type="text" placeholder="Clifford" onChange={(e) => setPetName(e.target.value)} value={petName}/>
             </Form.Group>
 
             <Form.Group>
               <Form.Label>Animal Type</Form.Label>
-              <Form.Control as="select" onChange={(e) => setAnimalType(e.target.value)}>
-                <option>Cat</option>
+              <Form.Control as="select" onChange={(e) => setAnimalType(e.target.value)} value={animalType}>
                 <option>Dog</option>
+                <option>Cat</option>
                 <option>Bird</option>
                 <option>Reptile</option>
                 <option>Cow</option>
@@ -189,12 +218,12 @@ export default function Create() {
             
             <Form.Group>
               <Form.Label>Description</Form.Label>
-              <Form.Control type="text" placeholder="Big red dog" onChange={(e) => setDescription(e.target.value)} />
+              <Form.Control type="text" placeholder="Big red dog" onChange={(e) => setDescription(e.target.value)} value={description}/>
             </Form.Group>
 
             <Form.Group>
               <Form.Label>City</Form.Label>
-              <Form.Control as="select" onChange={(e) => setCity(e.target.value)}>
+              <Form.Control as="select" onChange={(e) => setCity(e.target.value)} value={city}>
                 <option>Vancouver</option>
                 <option>North Vancouver</option>
                 <option>Burnaby</option>
@@ -209,7 +238,7 @@ export default function Create() {
 
             <Form.Group>
               <Form.Label>Posting Type</Form.Label>
-              <Form.Control as="select" onChange={(e) => setPostingType(e.target.value)}>
+              <Form.Control as="select" onChange={(e) => setPostingType(e.target.value)} value={postingType}>
                 <option>Lost</option>
                 <option>Found</option>
               </Form.Control>
@@ -237,8 +266,8 @@ export default function Create() {
             <div style={{ height: '60vh', width: '100%' }}>
               <GoogleMapReact
                 bootstrapURLKeys={{key: "AIzaSyBvegNY-5thSCCntrobyjDyHkqWsKteQVc"}}
-                defaultCenter={{lat: 49, lng: -123}}
-                zoom={9}
+                defaultCenter={{lat: latitude, lng: longitude}}
+                zoom={10}
                 onClick={ ({x, y, lat, lng}) => {
                   setLat(lat);
                   setLong(lng);
@@ -249,14 +278,15 @@ export default function Create() {
               </GoogleMapReact>
             </div>
           </Row>
+          <p className="lead">Click anywhere on the map to mark a location on where the pet was {postingType.toLowerCase()}.</p>
         </Col>
         
-        <Button disabled={btnIsDisabled} onClick={async() => {
+        <Button className="my-4" disabled={btnIsDisabled} onClick={async() => {
             var postObj = checkMissingAttributes();
             console.log("postobj", postObj);
             
             if (postObj != null) {
-                postObj.token = await getCaptchaToken();
+                // postObj.token = await getCaptchaToken();
                 await postImage();
                 console.log("imgkey", imgKey);
                 postObj.imgKey = imgKey;

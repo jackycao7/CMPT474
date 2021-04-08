@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 
 import api from "../api";
 
@@ -9,25 +10,27 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 
 async function deletePosting(uuid){
-    // await fetch(api.gateway, {
-    //     method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    //     mode: 'cors', // no-cors, *cors, same-origin
-    //     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    //     credentials: 'same-origin', // include, *same-origin, omit
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     redirect: 'follow', // manual, *follow, error
-    //     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    //     body: JSON.stringify(uuid)
-    // })
-    // .then(() => {
-    //     alert("Post has been deleted.");
-    // })
+    let api_url = api.gateway + "/postings/delete?uuid=" + uuid;
+
+    await fetch(api.gateway, {
+        method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    })
+    .then(() => {
+        alert("Post has been deleted.");
+    })
 }
 
 export default function Delete(){
     const [btnClicked, setBtnClicked] = useState(false);
+    let { uuid } = useParams();
 
     return(
         <Container>
@@ -37,7 +40,7 @@ export default function Delete(){
                 <Row md={4}>
                     <Col>
                         <Button disabled={btnClicked} onClick={() => {
-                            deletePosting();
+                            deletePosting(uuid);
                             setBtnClicked(true);
                         }}>
                             Yes

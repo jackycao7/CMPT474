@@ -47,6 +47,8 @@ export default function Create() {
   }
 
   function checkMissingAttributes(){
+    let d = new Date();
+
     let postObj = {
         'contactEmail': email,
         'contactPhone': phone,
@@ -193,19 +195,20 @@ export default function Create() {
 
   return (
     <Container>
-        <h1 className="display-4">Post Details</h1>
+
         <Col>
+        <h1 className="display-4 mt-4">Post Details</h1>
           <Form>
             <Form.Group>
               <Form.Label>Pet Name</Form.Label>
-              <Form.Control type="text" placeholder="asdf" onChange={(e) => setPetName(e.target.value)} />
+              <Form.Control type="text" placeholder="Clifford" onChange={(e) => setPetName(e.target.value)} />
             </Form.Group>
 
             <Form.Group>
               <Form.Label>Animal Type</Form.Label>
               <Form.Control as="select" onChange={(e) => setAnimalType(e.target.value)}>
-                <option>Cat</option>
                 <option>Dog</option>
+                <option>Cat</option>
                 <option>Bird</option>
                 <option>Reptile</option>
                 <option>Cow</option>
@@ -240,7 +243,7 @@ export default function Create() {
 
             <Form.Group>
               <Form.Label>Phone Number</Form.Label>
-              <Form.Control type="text" placeholder="asdf" onChange={(e) => setPhone(e.target.value)} />
+              <Form.Control type="text" placeholder="(000)-000-0000" onChange={(e) => setPhone(e.target.value)} />
             </Form.Group>
 
             <Form.Group>
@@ -268,44 +271,45 @@ export default function Create() {
         </Col>
 
         <Col>
-          <Row>
-            <h1 className="display-4 my-4">Map</h1>
-            <div style={{ height: '60vh', width: '100%' }}>
-              <GoogleMapReact
-                bootstrapURLKeys={{key: "AIzaSyBvegNY-5thSCCntrobyjDyHkqWsKteQVc"}}
-                defaultCenter={{lat: 49, lng: -123}}
-                zoom={9}
-                onClick={ ({x, y, lat, lng}) => {
-                  // console.log("x:" + x, "y:" + y, "latitude:" + lat, "long:" + lng);
-                  setLat(lat);
-                  setLong(lng);
-                  console.log("lat:", latitude, "lng:", longitude);
-                }}  
-              >
-                <Marker lat={latitude} lng={longitude} text="1"/>
-              </GoogleMapReact>
-            </div>
-          </Row>
+          <h1 className="display-4 mt-4">Map</h1>
+          <p className="lead">Click anywhere on the map to mark a location on where the pet was {postingType.toLowerCase()}.</p>
+          <div style={{ height: '60vh', width: '100%' }}>
+            <GoogleMapReact
+              bootstrapURLKeys={{key: "AIzaSyBvegNY-5thSCCntrobyjDyHkqWsKteQVc"}}
+              defaultCenter={{lat: 49, lng: -123}}
+              zoom={9}
+              onClick={ ({x, y, lat, lng}) => {
+                // console.log("x:" + x, "y:" + y, "latitude:" + lat, "long:" + lng);
+                setLat(lat);
+                setLong(lng);
+                console.log("lat:", latitude, "lng:", longitude);
+              }}  
+            >
+              <Marker lat={latitude} lng={longitude} text="1"/>
+            </GoogleMapReact>
+          </div>
         </Col>
-        
-        <Button disabled={btnIsDisabled} onClick={async() => {
-            var postObj = checkMissingAttributes();
-            console.log("postobj", postObj);
-            
-            if (postObj != null) {
-                postObj.token = await getCaptchaToken();
-                await postImage();
-                console.log("imgkey", imgKey);
-                postObj.imgKey = imgKey;
-                await postDetails(postObj);
-            }
-            else {
-                alert("Form is incomplete");
-            }
-          }}
-        >
-          Submit
-        </Button>
+
+        <Col>
+          <Button className="my-4" disabled={btnIsDisabled} onClick={async() => {
+              var postObj = checkMissingAttributes();
+              console.log("postobj", postObj);
+              
+              if (postObj != null) {
+                  // postObj.token = await getCaptchaToken();
+                  await postImage();
+                  console.log("imgkey", imgKey);
+                  postObj.imgKey = imgKey;
+                  await postDetails(postObj);
+              }
+              else {
+                  alert("Form is incomplete");
+              }
+            }}
+          >
+            Submit
+          </Button>
+        </Col>
 
     </Container>
   );
