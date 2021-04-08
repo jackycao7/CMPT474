@@ -5,6 +5,8 @@ import logo from './components/logo.svg';
 import Homepage from './pages/Homepage';
 import Pet from './pages/Pet';
 import Create from './pages/Create';
+import Edit from './pages/Edit';
+import Delete from './pages/Delete';
 
 // React Router DOM
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
@@ -23,7 +25,7 @@ export default function App() {
           <img
             src={logo}
             className="d-inline-block align-top"
-            alt="a"
+            alt="p"
           /> {' '}
             Petfindr
           </Navbar.Brand>
@@ -40,6 +42,14 @@ export default function App() {
 
           <Route path="/create">
             <Create />
+          </Route>
+
+          <Route path="/edit">
+            <Edit />
+          </Route>
+
+          <Route path="/delete">
+            <Delete />
           </Route>
 
           <Route path="/">

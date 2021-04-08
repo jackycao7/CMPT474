@@ -70,14 +70,32 @@ export default function Homepage(props) {
                             <Dropdown className="my-4">
                                 <Dropdown.Toggle variant="primary" id="dropdown-basic">Filter</Dropdown.Toggle>
 
-                                <Dropdown.Menu title="Filter">
+                                <Dropdown.Menu title="Posting Type">
                                     <Dropdown.Header>Posting Type</Dropdown.Header>
                                     <Dropdown.Item as="button" onClick={() => setPostingFilter("Lost")}>Lost Pets</Dropdown.Item>
                                     <Dropdown.Item as="button" onClick={() => setPostingFilter("Found")}>Found Pets</Dropdown.Item>
+                                </Dropdown.Menu >
+                            </Dropdown>
+                        </Col>
 
-                                    <Dropdown.Header></Dropdown.Header>
-                                    
-                                    <Dropdown.Header>Location</Dropdown.Header>
+                        <Col>
+                            <Dropdown className="my-4">
+                                <Dropdown.Toggle variant="primary" id="dropdown-basic">Sort: {sortOrder === "desc" ? " Oldest" : " Newest"}</Dropdown.Toggle>
+
+                                <Dropdown.Menu title="Sort by date">
+                                    <Dropdown.Header>Posting Type</Dropdown.Header>
+                                    <Dropdown.Item as="button" onClick={() => setSortOrder("desc")}>Date added (oldest)</Dropdown.Item>
+                                    <Dropdown.Item as="button" onClick={() => setSortOrder("asc")}>Date added (newest)</Dropdown.Item>
+                                </Dropdown.Menu >
+                            </Dropdown>
+                        </Col>
+
+                        <Col>
+                            <Dropdown className="my-4">
+                                <Dropdown.Toggle variant="primary" id="dropdown-basic">Location: {cityFilter !== "" ? cityFilter : "All"}</Dropdown.Toggle>
+
+                                <Dropdown.Menu title="Location">
+                                    <Dropdown.Item as="button" onClick={() => setCityFilter("")}>All</Dropdown.Item>
                                     <Dropdown.Item as="button" onClick={() => setCityFilter("Vancouver")}>Vancouver</Dropdown.Item>
                                     <Dropdown.Item as="button" onClick={() => setCityFilter("North Vancouver")}>North Vancouver</Dropdown.Item>
                                     <Dropdown.Item as="button" onClick={() => setCityFilter("Burnaby")}>Burnaby</Dropdown.Item>
@@ -86,19 +104,7 @@ export default function Homepage(props) {
                                     <Dropdown.Item as="button" onClick={() => setCityFilter("New Westminster")}>New Westminster</Dropdown.Item>
                                     <Dropdown.Item as="button" onClick={() => setCityFilter("Coquitlam")}>Coquitlam</Dropdown.Item>
                                     <Dropdown.Item as="button" onClick={() => setCityFilter("Delta")}>Delta</Dropdown.Item>
-                                    <Dropdown.Item as="button" onClick={() => setCityFilter("Other")}>Other</Dropdown.Item>
                                 </Dropdown.Menu >
-                            </Dropdown>
-                        </Col>
-
-                        <Col>
-                            <Dropdown className="my-4">
-                                    <Dropdown.Toggle variant="primary" id="dropdown-basic">Sort: {sortOrder === "desc" ? " Oldest" : " Newest"}</Dropdown.Toggle>
-                                    <Dropdown.Menu title="Filter">
-                                        <Dropdown.Header>Posting Type</Dropdown.Header>
-                                        <Dropdown.Item as="button" onClick={() => setSortOrder("desc")}>Date added (oldest)</Dropdown.Item>
-                                        <Dropdown.Item as="button" onClick={() => setSortOrder("asc")}>Date added (newest)</Dropdown.Item>
-                                    </Dropdown.Menu >
                             </Dropdown>
                         </Col>
                     </Row>
