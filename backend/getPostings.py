@@ -17,7 +17,8 @@ def queryTableWithFilters(table, partitionKey, allFilters, lastEvaluatedKey, sor
                             IndexName = 'postingType-datePosted-index',
                             KeyConditionExpression = Key('postingType').eq(partitionKey),
                             FilterExpression = filterExpression,
-                            ScanIndexForward = sortDateAscending
+                            ScanIndexForward = sortDateAscending,
+                            ProjectionExpression = 'contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted'
                         )
         else:
             # Query with pagination
@@ -26,7 +27,8 @@ def queryTableWithFilters(table, partitionKey, allFilters, lastEvaluatedKey, sor
                             KeyConditionExpression = Key('postingType').eq(partitionKey),
                             FilterExpression = filterExpression,
                             ScanIndexForward = sortDateAscending,
-                            ExclusiveStartKey = lastEvaluatedKey
+                            ProjectionExpression = 'contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted',
+                            ExclusiveStartKey = lastEvaluatedKey,
                         )
                         
     except Exception as e:
@@ -40,13 +42,15 @@ def queryTableWithoutFilters(table, partitionKey, lastEvaluatedKey, sortDateAsce
             response = table.query(
                             IndexName = 'postingType-datePosted-index',
                             KeyConditionExpression = Key('postingType').eq(partitionKey),
-                            ScanIndexForward = sortDateAscending
+                            ScanIndexForward = sortDateAscending,
+                            ProjectionExpression = 'contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted'
                         )
         else:
              response = table.query(
                             IndexName = 'postingType-datePosted-index',
                             KeyConditionExpression = Key('postingType').eq(partitionKey),
                             ScanIndexForward = sortDateAscending,
+                            ProjectionExpression = 'contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted',
                             ExclusiveStartKey = lastEvaluatedKey
                         )
                         
@@ -55,10 +59,15 @@ def queryTableWithoutFilters(table, partitionKey, lastEvaluatedKey, sortDateAsce
         
     return response
 
-    
+
 def getPostingByUUID(table, uuid):
     try:
-        response = table.get_item(Key={'UUID': uuid})
+        response = table.get_item(
+            Key={
+                'UUID': uuid
+            },
+            ProjectionExpression = 'contactEmail, contactPhone, city, description, postingType, dateLostFound, coordinates, petName, animalType, datePosted'
+        )
     except Exception as e:
         raise Exception(e)
     

@@ -44,8 +44,8 @@ export default function Pet(props) {
   
 
   if(pet){
-    let latitude = pet.latitude;
-    let longitude = pet.longitude;
+    let latitude = pet.coordinates[0];
+    let longitude = pet.coordinates[1];
     
     return (
       <Container>
