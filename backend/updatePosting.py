@@ -1,26 +1,31 @@
 from lambda_function import *
 
-def updatePosting(body, table):
+def updatePosting(body, uuid, table):
     
     try:
         response = table.update_item(
             Key={
-                'UUID': body['uuid']
+                'UUID': uuid
             },
-            UpdateExpression='SET city = :city, \
+            UpdateExpression='SET contactEmail = :contactEmail, \
+                                  contactPhone = :contactPhone, \
+                                  city = :city, \
                                   description = :description, \
                                   postingType = :postingType, \
                                   coordinates = :coordinates, \
                                   petName = :petName, \
-                                  animalType = :animalType \
-                                  imgKey = : imgKey',
+                                  animalType = :animalType, \
+                                  active = :active',
             ExpressionAttributeValues={
+                ':contactEmail': body['contactEmail'],
+                ':contactPhone': body['contactPhone'],
                 ':city': body['city'],
                 ':description': body['description'],
                 ':postingType': body['postingType'],
                 ':coordinates': body['coordinates'],
                 ':petName': body['petName'],
-                ':animalType': body['animalType']
+                ':animalType': body['animalType'],
+                ':active': body['active']
             }
         )
         
