@@ -1,5 +1,6 @@
 from lambda_function import *
 from sendMail import *
+import time
 
 def createPosting(body, table):
     
@@ -18,11 +19,13 @@ def createPosting(body, table):
                 'coordinates': body['coordinates'],
                 'petName': body['petName'],
                 'animalType': body['animalType'],
-                'datePosted': strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime()),
+                'datePosted': str(int(time.time())),
                 'active': 1,
-                'accessCode': random_ac
+                'accessCode': random_ac,
+                'imgKey': body['imgKey']
             }
         )
+        sendMail(body['contactEmail'],item_uuid, random_ac, body['postingType'], body['animalType'], body['city'])
         
     except Exception as e:
         raise Exception('Error: ' + str(e))
