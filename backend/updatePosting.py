@@ -7,25 +7,20 @@ def updatePosting(body, table):
             Key={
                 'UUID': body['uuid']
             },
-            UpdateExpression='SET contactEmail = :contactEmail, \
-                                  contactPhone = :contactPhone, \
-                                  city = :city, \
+            UpdateExpression='SET city = :city, \
                                   description = :description, \
                                   postingType = :postingType, \
                                   coordinates = :coordinates, \
                                   petName = :petName, \
-                                  animalType = :animalType, \
-                                  active = :active',
+                                  animalType = :animalType \
+                                  imgKey = : imgKey',
             ExpressionAttributeValues={
-                ':contactEmail': body['contactEmail'],
-                ':contactPhone': body['contactPhone'],
                 ':city': body['city'],
                 ':description': body['description'],
                 ':postingType': body['postingType'],
                 ':coordinates': body['coordinates'],
                 ':petName': body['petName'],
-                ':animalType': body['animalType'],
-                ':active': body['active']
+                ':animalType': body['animalType']
             }
         )
         
