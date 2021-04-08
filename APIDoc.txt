@@ -1,0 +1,51 @@
+API Documentation:
+
+/postings:
+	Used to retrieve 1 posting by uuid, or all postings with filters
+
+	URL parameters:
+		postingType (required): Lost or Found,
+		city (optional): Case-sensitive,
+		animalType (optional): Case sensitive,
+		dateSortOrder (optional): asc or desc,
+		uuid (optioal): will ignore filters if uuid is present
+		
+		
+/postings/create:
+	Create postings with fields from request body
+	Can add more fields as needed
+
+	Request body:
+                'contactEmail': 
+                'contactPhone': 
+                'city': 
+                'description':
+                'postingType': 
+                'dateLostFound':
+                'coordinates': 
+                'petName': 
+                'animalType': 
+                'datePosted': 
+
+/postings/delete:
+	Delete posting by uuid
+
+	URL parameter:
+		uuid (required)
+
+/postings/edit:
+	Edit posting by uuid with fiels from request body
+
+	Request body:
+                'contactEmail': 
+                'contactPhone': 
+                'city': 
+                'description':
+                'postingType': 
+                'dateLostFound':
+                'coordinates': 
+                'petName': 
+                'animalType': 
+                'datePosted': 
+
+
