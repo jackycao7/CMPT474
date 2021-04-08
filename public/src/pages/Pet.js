@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import api from '../api.js'
@@ -15,14 +15,35 @@ import Marker from '../components/Marker';
 
 
 export default function Pet(props) {
-
-  let listings = props.data;
   let { id } = useParams();
+  let api_url = api.gateway + "postings?uuid=" + id;
+
+  const [pet, setPet] = useState(null);
+
+  useEffect(() => {
+    async function fetchListings(){
+        await fetch(api_url, {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        })
+        .then(res => res.json())
+        .then(data => {
+            setPet(data.body)
+            console.log(pet);
+        })
+    }
+    fetchListings();
+  }, [])
   
-  let pet = listings.find(x => x.UUID === id);
 
   if(pet){
-    console.log(pet);
     let latitude = pet.latitude;
     let longitude = pet.longitude;
     

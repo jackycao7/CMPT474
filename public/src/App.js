@@ -1,7 +1,6 @@
 import React, { useState, useEffect }  from 'react';
 
 // Components
-import api from './api.js';
 import logo from './components/logo.svg';
 import Homepage from './pages/Homepage';
 import Pet from './pages/Pet';
@@ -15,30 +14,6 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav';
 
 export default function App() {
-  const [listings, setListings] = useState([]);
-  const [numListings, setNumListings] = useState(0);
-
-  useEffect(() => {
-      async function fetchListings(){
-          await fetch(api.gateway, {
-              method: 'GET', // *GET, POST, PUT, DELETE, etc.
-              mode: 'cors', // no-cors, *cors, same-origin
-              cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-              credentials: 'same-origin', // include, *same-origin, omit
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              redirect: 'follow', // manual, *follow, error
-              referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-          })
-          .then(res => res.json())
-          .then(data => {
-              setNumListings(data.body.numPostings);
-              setListings(data.body.postings);
-          })
-      }
-      fetchListings();
-  }, [])
 
   return (
     <Router>
@@ -60,7 +35,7 @@ export default function App() {
 
         <Switch>
           <Route path="/pet/:id">
-            <Pet data={listings}/>
+            <Pet/>
           </Route>
 
           <Route path="/create">
@@ -68,7 +43,7 @@ export default function App() {
           </Route>
 
           <Route path="/">
-            <Homepage data={listings} numListings={numListings} />
+            <Homepage />
           </Route>
         </Switch>
       </div>
