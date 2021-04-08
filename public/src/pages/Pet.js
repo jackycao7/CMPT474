@@ -8,6 +8,9 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
+import Card from 'react-bootstrap/Card';
+import FormControl from 'react-bootstrap/FormControl'
+import InputGroup from 'react-bootstrap/InputGroup'
 
 // Google Maps React
 import GoogleMapReact from 'google-map-react';
@@ -46,44 +49,60 @@ export default function Pet(props) {
   if(pet){
     let latitude = pet.coordinates[0];
     let longitude = pet.coordinates[1];
-    
+    console.log(pet)
     return (
       <Container>
-        <Row>
-          <Col>
+        <Row className="justify-content-md-center mb-4">
+          <Card className="shadow-lg">
             <Image rounded src={"https://" + api.albumBucketName + ".s3.amazonaws.com/" + pet.imgKey}/>
-          </Col>
+          </Card>
         </Row>
 
-        <h1 className="display-3">{pet.petName}</h1>
+        <h1 className="display-2">{pet.petName}</h1>
         <p className="lead">{pet.description}</p>
 
         <h1 className="display-4 my-4">Details</h1>
-
-        <h4>Animal</h4>
-        <p className="lead">{pet.animalType}</p>
-
-        <h4>Status</h4>
-        <p className="lead">{pet.postingType}</p>
-
-        <h4>Date Posted</h4>
-        <p className="lead">{pet.datePosted}</p>
-
-        <h4>City</h4>
-        <p className="lead">{pet.city}</p>
-
-        <h1 className="display-4 my-4">Map</h1>
+        <Row>
+          <Col>
+            <h4>Animal</h4>
+            <p className="lead">{pet.animalType}</p>
+          </Col>
+        
+          <Col>
+            <h4>Status</h4>
+            <p className="lead">{pet.postingType}</p>
+          </Col>
+        </Row>
+        
+        <Row>
+          <Col>
+            <h4>Date Posted</h4>
+            <p className="lead">{pet.datePosted}</p>
+          </Col>
+          
+          <Col>
+            <h4>City</h4>
+            <p className="lead">{pet.city}</p>
+          </Col>
+        </Row>
+        
+        
+        <h1 className="display-4 mt-4">Map</h1>
+        <p  className="lead mx-1">{ pet.postingType === "Lost" ? pet.petName + " was last seen here" : pet.petName + " was found here"}</p>
         <div style={{ height: '60vh', width: '100%' }}>
           <GoogleMapReact
             bootstrapURLKeys={{key: "AIzaSyBvegNY-5thSCCntrobyjDyHkqWsKteQVc"}}
-            defaultCenter={{lat: 49, lng: -123}}
-            zoom={5}
+            defaultCenter={{lat: latitude, lng: longitude}}
+            zoom={12}
           >
             <Marker lat={latitude} lng={longitude} text="1"/>
           </GoogleMapReact>
         </div>
 
         <h1 className="display-4 my-4">Contact</h1>
+        <InputGroup className="my-4">
+          <FormControl as="textarea" aria-label="With textarea" />
+        </InputGroup>
       </Container>
     );
   }

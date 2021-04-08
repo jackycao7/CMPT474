@@ -44,7 +44,7 @@ export default function App() {
             <Create />
           </Route>
 
-          <Route path="/edit">
+          <Route path="/edit/:id">
             <Edit />
           </Route>
 
