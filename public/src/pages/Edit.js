@@ -265,12 +265,17 @@ export default function Edit() {
 
 
           <Button className="my-4 mr-4" variant="outline-danger" disabled={deleteBtnClicked} onClick={() => {
-              let deleteDecision = window.confirm("Are you sure you want to delete this post?");
-              if(deleteDecision){
-                deletePosting(id);
-                setDeleteBtnClicked(true);
-                window.location.href = "/";
-              }           
+              if(accessCode){
+                let deleteDecision = window.confirm("Are you sure you want to delete this post?");
+                if(deleteDecision){
+                  deletePosting(id);
+                  setDeleteBtnClicked(true);
+                  window.location.href = "/";
+                }
+              }
+              else{
+                alert("Please enter a valid access code.");
+              }
           }}>
             Delete Posting
           </Button>
