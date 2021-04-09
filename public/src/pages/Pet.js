@@ -49,7 +49,10 @@ export default function Pet(props) {
   if(pet){
     let latitude = pet.coordinates[0];
     let longitude = pet.coordinates[1];
+    let d = new Date(pet.dateLostFound);
+
     console.log(pet)
+
     return (
       <Container>
         <Row className="justify-content-md-center mb-4">
@@ -77,7 +80,7 @@ export default function Pet(props) {
         <Row>
           <Col>
             <h4>Date Posted</h4>
-            <p className="lead">{pet.datePosted}</p>
+            <p className="lead">{d.toLocaleDateString() + " at " + d.toLocaleTimeString()}</p>
           </Col>
           
           <Col>
