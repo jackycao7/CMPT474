@@ -21,14 +21,14 @@ export default function App() {
   return (
     <Router>
       <div>
-        <Navbar bg="dark" variant="dark" sticky="top">
+        <Navbar style={{"background-color": "#3F784C"}} variant="dark" sticky="top">
           <Navbar.Brand href="/">
           <img
             src={logo}
             className="d-inline-block align-top"
             alt="p"
           /> {' '}
-            Petfindr
+            PetFindr
           </Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link href="/home">Home</Nav.Link>
