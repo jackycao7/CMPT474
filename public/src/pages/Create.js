@@ -20,7 +20,7 @@ import GoogleMapReact from 'google-map-react';
 
 export default function Create() {
   const [petName, setPetName] = useState("");
-  const [animalType, setAnimalType] = useState("Cat");
+  const [animalType, setAnimalType] = useState("Dog");
   const [description, setDescription] = useState("");
   const [city, setCity] = useState("Vancouver");
   const [email, setEmail] = useState("");
