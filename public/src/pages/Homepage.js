@@ -56,7 +56,7 @@ export default function Homepage(props) {
             .then(data => {
                 // setNumListings(data.body.numPostings);
                 setListings(data.body.postings)
-                console.log(listings);
+                // console.log(listings);
             })
         }
         fetchListings();

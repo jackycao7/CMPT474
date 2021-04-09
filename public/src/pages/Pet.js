@@ -39,7 +39,7 @@ export default function Pet(props) {
         .then(res => res.json())
         .then(data => {
             setPet(data.body)
-            console.log(pet);
+            // console.log(pet);
         })
     }
     fetchListings();
@@ -51,7 +51,7 @@ export default function Pet(props) {
     let longitude = pet.coordinates[1];
     let d = new Date(pet.dateLostFound);
 
-    console.log(pet)
+    // console.log(pet)
 
     return (
       <Container>
@@ -103,9 +103,12 @@ export default function Pet(props) {
         </div>
 
         <h1 className="display-4 my-4">Contact</h1>
-        <InputGroup className="my-4">
-          <FormControl as="textarea" aria-label="With textarea" />
-        </InputGroup>
+        <Row>
+          <Col>
+              <h4>Email</h4>
+              <p className="lead">{ pet.contactEmail }</p>
+          </Col>
+        </Row>
       </Container>
     );
   }

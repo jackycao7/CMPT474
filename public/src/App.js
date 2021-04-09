@@ -6,7 +6,6 @@ import Homepage from './pages/Homepage';
 import Pet from './pages/Pet';
 import Create from './pages/Create';
 import Edit from './pages/Edit';
-import Delete from './pages/Delete';
 
 // React Router DOM
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
@@ -46,10 +45,6 @@ export default function App() {
 
           <Route path="/edit/:id">
             <Edit />
-          </Route>
-
-          <Route path="/delete">
-            <Delete />
           </Route>
 
           <Route path="/">

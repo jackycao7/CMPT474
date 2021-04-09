@@ -72,14 +72,14 @@ export default function Create() {
       return null;
     }
     else {
-      console.log("missing attributes function", postObj);
+      // console.log("missing attributes function", postObj);
       return postObj;
     }
   }
 
   async function postDetails(postObj){ 
     setBtnState(true);
-    console.log(postObj);
+    // console.log(postObj);
     let api_url = api.gateway + "postings/create";
     await fetch(api_url, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -95,7 +95,7 @@ export default function Create() {
     })
     .then(response => response.json())
     .then(data => {
-      console.log('Success:', data);
+      // console.log('Success:', data);
     })
   }
 
@@ -121,7 +121,7 @@ export default function Create() {
         try {
           const data = await s3.send(new PutObjectCommand(uploadParams));
           imgKey = photoKey;
-          alert("Successfully uploaded photo.");
+          // alert("Successfully uploaded photo.");
         } catch (err) {
           alert("There was an error uploading your photo: ", err.message);
         }
@@ -143,27 +143,6 @@ export default function Create() {
     r.readAsDataURL(event.target.files[0]);
   }
 
-  /*
-  async function getAllAlbumNames(){
-    try{
-      const data = await s3.send(
-        new ListObjectsCommand({ Delimiter: "/", Bucket: api.albumBucketName })
-      );
-      var albums = data.CommonPrefixes.map(function (commonPrefix) {
-        var prefix = commonPrefix.Prefix;
-        var albumName = decodeURIComponent(prefix.replace("/", ""));
-
-        console.log(albums);
-        console.log(prefix);
-        console.log(albumName);
-      })
-    }
-    catch(err){
-      console.log(err);
-    }
-  }
-  */
-
   const s3 = new S3Client({ 
     region: api.bucketRegion,
     credentials: fromCognitoIdentityPool({
@@ -177,7 +156,7 @@ export default function Create() {
     await new Promise(function(resolve, reject) {
       window.grecaptcha.ready(() => {
         window.grecaptcha.execute('6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-', {action: 'submit'}).then(token => {
-          console.log("captcha token", token);
+          // console.log("captcha token", token);
           if (token) {
               captchaToken = token;
               resolve();
@@ -266,7 +245,7 @@ export default function Create() {
               <Form.File 
                 label="Upload an image" 
                 onChange={(e) => {
-                    console.log(e.target.files[0]);
+                    // console.log(e.target.files[0]);
                     previewImage(e);
                     setImgFile(e.target.files[0]);
                   }
@@ -288,7 +267,7 @@ export default function Create() {
                 // console.log("x:" + x, "y:" + y, "latitude:" + lat, "long:" + lng);
                 setLat(lat);
                 setLong(lng);
-                console.log("lat:", latitude, "lng:", longitude);
+                // console.log("lat:", latitude, "lng:", longitude);
               }}  
             >
               <Marker lat={latitude} lng={longitude} text="1"/>
@@ -299,14 +278,15 @@ export default function Create() {
         <Col>
           <Button className="my-4" disabled={btnIsDisabled} onClick={async() => {
               var postObj = checkMissingAttributes();
-              console.log("postobj", postObj);
+              // console.log("postobj", postObj);
               
               if (postObj != null) {
-                  // postObj.token = await getCaptchaToken();
+                  postObj.token = await getCaptchaToken();
                   await postImage();
-                  console.log("imgkey", imgKey);
+                  // console.log("imgkey", imgKey);
                   postObj.imgKey = imgKey;
                   await postDetails(postObj);
+                  alert("Posting has been submitted.");
                   window.location.href = "/";
               }
               else {
