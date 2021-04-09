@@ -93,7 +93,7 @@ export default function Homepage(props) {
 
                     <Col xs lg={2}>
                         <Dropdown className="">
-                            <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">Sort: {sortOrder === "asc" ? " Newest" : " Oldest"}</Dropdown.Toggle>
+                            <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">Sort: {sortOrder === "desc" ? " Newest" : " Oldest"}</Dropdown.Toggle>
 
                             <Dropdown.Menu title="Sort by date">
                                 <Dropdown.Header>Date added</Dropdown.Header>
