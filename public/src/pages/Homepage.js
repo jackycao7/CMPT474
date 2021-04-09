@@ -14,7 +14,7 @@ export default function Homepage(props) {
     // Filters
     const [postingFilter, setPostingFilter] = useState('Lost');
     const [cityFilter, setCityFilter] = useState('');
-    const [sortOrder, setSortOrder] = useState('asc');
+    const [sortOrder, setSortOrder] = useState('desc');
 
     // Listings
     const [listings, setListings] = useState([]);
@@ -95,8 +95,8 @@ export default function Homepage(props) {
 
                             <Dropdown.Menu title="Sort by date">
                                 <Dropdown.Header>Date added</Dropdown.Header>
-                                <Dropdown.Item as="button" onClick={() => setSortOrder("asc")}>Date added (newest)</Dropdown.Item>
-                                <Dropdown.Item as="button" onClick={() => setSortOrder("desc")}>Date added (oldest)</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setSortOrder("desc")}>Date added (newest)</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setSortOrder("asc")}>Date added (oldest)</Dropdown.Item>
                             </Dropdown.Menu >
                         </Dropdown>
                     </Col>
