@@ -134,7 +134,8 @@ export default function Homepage(props) {
                                 <Dropdown.Item as="button" onClick={() => setCityFilter("Richmond")}>Richmond</Dropdown.Item>
                                 <Dropdown.Item as="button" onClick={() => setCityFilter("New Westminster")}>New Westminster</Dropdown.Item>
                                 <Dropdown.Item as="button" onClick={() => setCityFilter("Coquitlam")}>Coquitlam</Dropdown.Item>
-                                <Dropdown.Item as="button" onClick={() => setCityFilter("Delta")}>Delta</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setCityFilter("Delta")}>Delta</Dropdown.Item>                                
+                                <Dropdown.Item as="button" onClick={() => setCityFilter("Other")}>Other</Dropdown.Item>
                             </Dropdown.Menu >
                         </Dropdown>
                     </Col>
