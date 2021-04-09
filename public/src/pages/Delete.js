@@ -39,7 +39,7 @@ export default function Delete(){
             <Container fluid>
                 <Row md={4}>
                     <Col>
-                        <Button disabled={btnClicked} onClick={() => {
+                        <Button variant='danger' disabled={btnClicked} onClick={() => {
                             deletePosting(uuid);
                             setBtnClicked(true);
                         }}>
