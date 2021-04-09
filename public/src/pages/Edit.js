@@ -248,7 +248,7 @@ export default function Edit() {
                   // postObj.token = await getCaptchaToken();
                   await postDetails(postObj);
                   alert("Post saved!");
-                  window.location.href = "/";
+                  //window.location.href = "/";
               }
               else {
                   alert("Form is incomplete");
