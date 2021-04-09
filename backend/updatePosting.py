@@ -10,26 +10,25 @@ def updatePosting(body, uuid, table):
                 raise Exception('Error: Incorrect accessCode')
         else:
             raise Exception('Error: UUID does not exist.')
-            
+    
+        coordinates = [0] * 2
+        coordinates[0] = decimal.Decimal(str(body['coordinates'][0]))
+        coordinates[1] = decimal.Decimal(str(body['coordinates'][1]))
         response = table.update_item(
             Key={
                 'UUID': uuid
             },
             UpdateExpression='SET city = :city, \
                                   description = :description, \
-                                  postingType = :postingType, \
                                   coordinates = :coordinates, \
                                   petName = :petName, \
-                                  animalType = :animalType, \
-                                  imgKey = :imgKey',
+                                  animalType = :animalType',
             ExpressionAttributeValues={
                 ':city': body['city'],
                 ':description': body['description'],
-                ':postingType': body['postingType'],
-                ':coordinates': body['coordinates'],
+                ':coordinates': coordinates,
                 ':petName': body['petName'],
                 ':animalType': body['animalType'],
-                ':imgKey': body['imgKey']
             }
         )
         

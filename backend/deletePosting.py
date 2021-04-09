@@ -1,10 +1,10 @@
 from lambda_function import *
 
-def deletePosting(body, table):
+def deletePosting(body, uuid, table):
     
     try:
         # checks if uuid is in table and if accessCode is correct
-        check = table.get_item(Key={'UUID': body['uuid']})
+        check = table.get_item(Key={'UUID': uuid})
         if 'Item' in check:
             if body['accessCode'] != check['Item']['accessCode']:
                 raise Exception('Error: Incorrect accessCode')
@@ -13,7 +13,7 @@ def deletePosting(body, table):
             
         response = table.delete_item(
             Key={
-                'UUID': body['uuid']
+                'UUID': uuid
             }
         )
     except Exception as e:
