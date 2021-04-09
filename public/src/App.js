@@ -2,6 +2,8 @@ import React, { useState, useEffect }  from 'react';
 
 // Components
 import logo from './components/logo.svg';
+import ghLogo from './components/GitHub-Mark.png';
+
 import Homepage from './pages/Homepage';
 import Pet from './pages/Pet';
 import Create from './pages/Create';
@@ -32,6 +34,8 @@ export default function App() {
             <Nav.Link href="/home">Home</Nav.Link>
             <Nav.Link href="/create">Make a Post</Nav.Link>
           </Nav>
+          
+          <img src={ghLogo} className="justify-content-end" alt="gh" onClick={() => window.location.href = "https://github.com/jackycao7/PetFindr"} style={{cursor:'pointer'}} />
         </Navbar>
 
         <Switch>
