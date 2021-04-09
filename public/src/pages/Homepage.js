@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown'
 // import Pagination from 'react-bootstrap/Pagination';
 
@@ -14,14 +14,16 @@ export default function Homepage(props) {
     // Filters
     const [postingFilter, setPostingFilter] = useState('Lost');
     const [cityFilter, setCityFilter] = useState('');
+    const [animalFilter, setAnimalFilter] = useState('');
     const [sortOrder, setSortOrder] = useState('asc');
 
     // Listings
     const [listings, setListings] = useState([]);
 
     let cityParam = cityFilter !== "" ? "&city=" + cityFilter : "";
+    let animalParam = animalFilter !== "" ? "&animalType=" + animalFilter : "";
     let sortParam =  sortOrder !== "" ? "&dateSortOrder=" + sortOrder : "";
-    let api_url = api.gateway + "postings?postingType=" + postingFilter + cityParam + sortParam;
+    let api_url = api.gateway + "postings?postingType=" + postingFilter + cityParam + sortParam + animalParam;
 
     let d = new Date();
     
@@ -119,6 +121,23 @@ export default function Homepage(props) {
                             </Dropdown.Menu >
                         </Dropdown>
                     </Col>
+
+                    <Col xs lg={2}>
+                        <Dropdown className="">
+                            <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">Animal: {animalFilter !== "" ? animalFilter : "All"}</Dropdown.Toggle>
+                            
+                            <Dropdown.Menu title="Animal">
+                                <Dropdown.Header>Animal</Dropdown.Header>
+                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("")}>All</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Dog")}>Dog</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Cat")}>Cat</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Bird")}>Bird</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Reptile")}>Reptile</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Cow")}>Cow</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Other")}>Other</Dropdown.Item>
+                            </Dropdown.Menu >
+                        </Dropdown>
+                    </Col>
                 </Row>
 
             { listings.length > 0
@@ -126,7 +145,7 @@ export default function Homepage(props) {
                 <Row className="mt-4" x={2} md={3}>
                     {
                         listings.map((listing) => {
-                            let d = new Date(listing.datePosted);
+                            let d = new Date(listing.dateLostFound);
                             let dateStr = d.toLocaleDateString() + " at " + d.toLocaleTimeString();
                             
                             return(
