@@ -3,29 +3,33 @@ from lambda_function import *
 def updatePosting(body, uuid, table):
     
     try:
+        # checks if uuid is in table and if accessCode is correct
+        check = table.get_item(Key={'UUID': uuid})
+        if 'Item' in check:
+            if body['accessCode'] != check['Item']['accessCode']:
+                raise Exception('Error: Incorrect accessCode')
+        else:
+            raise Exception('Error: UUID does not exist.')
+            
         response = table.update_item(
             Key={
                 'UUID': uuid
             },
-            UpdateExpression='SET contactEmail = :contactEmail, \
-                                  contactPhone = :contactPhone, \
-                                  city = :city, \
+            UpdateExpression='SET city = :city, \
                                   description = :description, \
                                   postingType = :postingType, \
                                   coordinates = :coordinates, \
                                   petName = :petName, \
                                   animalType = :animalType, \
-                                  active = :active',
+                                  imgKey = :imgKey',
             ExpressionAttributeValues={
-                ':contactEmail': body['contactEmail'],
-                ':contactPhone': body['contactPhone'],
                 ':city': body['city'],
                 ':description': body['description'],
                 ':postingType': body['postingType'],
                 ':coordinates': body['coordinates'],
                 ':petName': body['petName'],
                 ':animalType': body['animalType'],
-                ':active': body['active']
+                ':imgKey': body['imgKey']
             }
         )
         

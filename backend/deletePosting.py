@@ -3,10 +3,13 @@ from lambda_function import *
 def deletePosting(body, table):
     
     try:
-        # checks if uuid is in table
+        # checks if uuid is in table and if accessCode is correct
         check = table.get_item(Key={'UUID': body['uuid']})
-        if 'Item' not in check:
-            raise Exception('UUID does not exist.')
+        if 'Item' in check:
+            if body['accessCode'] != check['Item']['accessCode']:
+                raise Exception('Error: Incorrect accessCode')
+        else:
+            raise Exception('Error: UUID does not exist.')
             
         response = table.delete_item(
             Key={
