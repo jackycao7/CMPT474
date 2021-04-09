@@ -91,7 +91,7 @@ export default function Edit() {
   async function deletePosting(uuid){
     let api_url = api.gateway + "/postings/delete?uuid=" + uuid;
 
-    await fetch(api.gateway, {
+    await fetch(api_url, {
         method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
