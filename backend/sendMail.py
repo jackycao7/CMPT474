@@ -1,15 +1,10 @@
 import smtplib
 import random
 from email.message import EmailMessage
-
-# CHANGE TO YOUR OWN AMPLIFY LINK
-amplifyLink = 'https://dev.deycwj94w1425.amplifyapp.com'
-
-
+from amplifyLink import amplifyLink
 
 def sendMail(contactEmail, item_uuid, random_ac, postingType, animalType, city):
     editLink = amplifyLink + '/edit/' + item_uuid
-    deleteLink = amplifyLink + '/delete/' + item_uuid
     msg = EmailMessage()
     msg.set_content('''
     Dear User,
@@ -20,17 +15,16 @@ def sendMail(contactEmail, item_uuid, random_ac, postingType, animalType, city):
     
     This posting is for the {} {} in {}.
     
-    Edit postings link: {}
-    Delete postings link: {}
     
-    Please keep this email somewhere safe.
+    To edit or delete the posting, please click on the link:
+    {}
+    
     
     Respectfully,
     
-    Jacky Bao
-    CEO PetFindr
+    PetFindr
     
-    '''.format(random_ac, postingType, animalType, city, editLink, deleteLink))
+    '''.format(random_ac, postingType, animalType, city, editLink))
     msg['Subject'] = 'PetFindr signup'
     msg['From'] = 'petfindr474@gmail.com'
     msg['To'] = contactEmail
