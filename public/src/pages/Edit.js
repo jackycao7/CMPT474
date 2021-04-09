@@ -61,14 +61,14 @@ export default function Edit() {
         return null;
     }
     else {
-        console.log("missing attributes function", postObj);
+        // console.log("missing attributes function", postObj);
         return postObj;
     }
   }
 
   async function postDetails(postObj){
     setSaveBtnClicked(true);
-    console.log(postObj);
+    // console.log(postObj);
     
     await fetch(api_url_edit, {
       method: 'PUT', // *GET, POST, PUT, DELETE, etc.
@@ -84,7 +84,7 @@ export default function Edit() {
     })
     .then(response => response.json())
     .then(data => {
-      console.log('Success:', data);
+      // console.log('Success:', data);
     })
   }
 
@@ -112,7 +112,7 @@ export default function Edit() {
     await new Promise(function(resolve, reject) {
       window.grecaptcha.ready(() => {
         window.grecaptcha.execute('6LdVDokaAAAAAG7_Zls7IZ1XPpraaUvWlqF3ciY-', {action: 'submit'}).then(token => {
-          console.log("captcha token", token);
+          // console.log("captcha token", token);
           if (token) {
               captchaToken = token;
               resolve();
@@ -129,7 +129,7 @@ export default function Edit() {
 
   useEffect(() => {
     async function getPet(){
-      console.log(api_url_get)
+      // console.log(api_url_get)
       await fetch(api_url_get, {
         method: 'GET', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
@@ -143,7 +143,7 @@ export default function Edit() {
           })
           .then(res => res.json())
           .then(data => {
-            console.log(data);
+            // console.log(data);
             setPet(data.body);
             
             setPetName(data.body.petName);
@@ -231,7 +231,7 @@ export default function Edit() {
               onClick={ ({x, y, lat, lng}) => {
                 setLat(lat);
                 setLong(lng);
-                console.log("lat:", latitude, "lng:", longitude);
+                // console.log("lat:", latitude, "lng:", longitude);
               }}  
             >
               <Marker lat={latitude} lng={longitude} text="1"/>
@@ -242,7 +242,7 @@ export default function Edit() {
         <Col>
           <Button className="my-4 mr-4" variant="success" disabled={saveBtnClicked} onClick={async() => {
               var postObj = checkMissingAttributes();
-              console.log("postobj", postObj);
+              // console.log("postobj", postObj);
               
               if (postObj != null) {
                   // postObj.token = await getCaptchaToken();

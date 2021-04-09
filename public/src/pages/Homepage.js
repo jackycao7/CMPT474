@@ -56,7 +56,7 @@ export default function Homepage(props) {
             .then(data => {
                 // setNumListings(data.body.numPostings);
                 setListings(data.body.postings)
-                console.log(listings);
+                // console.log(listings);
             })
         }
         fetchListings();
@@ -105,6 +105,23 @@ export default function Homepage(props) {
 
                     <Col xs lg={2}>
                         <Dropdown className="">
+                            <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">Animal: {animalFilter !== "" ? animalFilter : "All"}</Dropdown.Toggle>
+                            
+                            <Dropdown.Menu title="Animal">
+                                <Dropdown.Header>Animal</Dropdown.Header>
+                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("")}>All</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Dog")}>Dog</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Cat")}>Cat</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Bird")}>Bird</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Reptile")}>Reptile</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Cow")}>Cow</Dropdown.Item>
+                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Other")}>Other</Dropdown.Item>
+                            </Dropdown.Menu >
+                        </Dropdown>
+                    </Col>
+
+                    <Col xs lg={2}>
+                        <Dropdown className="">
                             <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">Location: {cityFilter !== "" ? cityFilter : "All"}</Dropdown.Toggle>
                             
                             <Dropdown.Menu title="Location">
@@ -118,23 +135,6 @@ export default function Homepage(props) {
                                 <Dropdown.Item as="button" onClick={() => setCityFilter("New Westminster")}>New Westminster</Dropdown.Item>
                                 <Dropdown.Item as="button" onClick={() => setCityFilter("Coquitlam")}>Coquitlam</Dropdown.Item>
                                 <Dropdown.Item as="button" onClick={() => setCityFilter("Delta")}>Delta</Dropdown.Item>
-                            </Dropdown.Menu >
-                        </Dropdown>
-                    </Col>
-
-                    <Col xs lg={2}>
-                        <Dropdown className="">
-                            <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">Animal: {animalFilter !== "" ? animalFilter : "All"}</Dropdown.Toggle>
-                            
-                            <Dropdown.Menu title="Animal">
-                                <Dropdown.Header>Animal</Dropdown.Header>
-                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("")}>All</Dropdown.Item>
-                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Dog")}>Dog</Dropdown.Item>
-                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Cat")}>Cat</Dropdown.Item>
-                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Bird")}>Bird</Dropdown.Item>
-                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Reptile")}>Reptile</Dropdown.Item>
-                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Cow")}>Cow</Dropdown.Item>
-                                <Dropdown.Item as="button" onClick={() => setAnimalFilter("Other")}>Other</Dropdown.Item>
                             </Dropdown.Menu >
                         </Dropdown>
                     </Col>
