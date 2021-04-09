@@ -90,21 +90,26 @@ export default function Edit() {
 
   async function deletePosting(uuid){
     let api_url = api.gateway + "/postings/delete?uuid=" + uuid;
-
-    await fetch(api_url, {
-        method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        redirect: 'follow', // manual, *follow, error
-        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    })
-    .then(() => {
-        alert("Post has been deleted.");
-    })
+    
+    if(accessCode){
+      await fetch(api_url, {
+          method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, *cors, same-origin
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: 'same-origin', // include, *same-origin, omit
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          redirect: 'follow', // manual, *follow, error
+          referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url,
+          body: JSON.stringify(accessCode)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        alert("Attempting to delete posting.");
+      })
+    }
   }
 
   async function getCaptchaToken() {
@@ -244,7 +249,7 @@ export default function Edit() {
               var postObj = checkMissingAttributes();
               // console.log("postobj", postObj);
               
-              if (postObj != null) {
+              if (postObj != null && accessCode) {
                   // postObj.token = await getCaptchaToken();
                   await postDetails(postObj);
                   alert("Post saved!");
