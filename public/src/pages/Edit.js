@@ -92,7 +92,7 @@ export default function Edit() {
     let api_url = api.gateway + "/postings/delete?uuid=" + uuid;
     
     if(accessCode){
-      await fetch(api.gateway, {
+      await fetch(api_url, {
           method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, *cors, same-origin
           cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -102,7 +102,7 @@ export default function Edit() {
           },
           redirect: 'follow', // manual, *follow, error
           referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url,
-          body: JSON.stringify(accessCode)
+          body: JSON.stringify({'accessCode': accessCode})
       })
       .then(response => response.json())
       .then(data => {
