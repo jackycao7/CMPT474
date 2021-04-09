@@ -264,7 +264,7 @@ export default function Edit() {
               if(deleteDecision){
                 deletePosting(id);
                 setDeleteBtnClicked(true);
-                window.location.href = "/";
+                //window.location.href = "/";
               }           
           }}>
             Delete Posting
