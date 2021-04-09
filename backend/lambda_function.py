@@ -36,8 +36,7 @@ def lambda_handler(event, context):
             coordinates[1] = decimal.Decimal(str(event['body']['coordinates'][1]))
             event['body']['coordinates'] = coordinates
             
-            # captchaSuccess = verifyCaptcha(event['body'])
-            captchaSuccess = True
+            captchaSuccess = verifyCaptcha(event['body'])
             
             if captchaSuccess:
                 response = createPosting(event['body'], table)
@@ -49,13 +48,13 @@ def lambda_handler(event, context):
         
         # Edit posting
         elif event['http_method'] == 'PUT':
-            response = updatePosting(event['body'], event['uuidParam'], table)
+            response = updatePosting(event['body']['requestBody'], event['body']['uuid'], table)
             responseBody = response['responseBody']
             statusCode = response['statusCode']
             
         # Delete posting
         elif event['http_method'] == 'DELETE':
-            response = deletePosting(event['body'], table)
+            response = deletePosting(event['body']['requestBody'], event['body']['uuid'], table)
             responseBody = response['responseBody']
             statusCode = response['statusCode']
             
