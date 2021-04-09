@@ -2,6 +2,8 @@ import React, { useState, useEffect }  from 'react';
 
 // Components
 import logo from './components/logo.svg';
+import ghLogo from './components/GitHub-Mark.png';
+
 import Homepage from './pages/Homepage';
 import Pet from './pages/Pet';
 import Create from './pages/Create';
@@ -19,19 +21,21 @@ export default function App() {
   return (
     <Router>
       <div>
-        <Navbar bg="dark" variant="dark" sticky="top">
+        <Navbar style={{"background-color": "#3F784C"}} variant="dark" sticky="top">
           <Navbar.Brand href="/">
           <img
             src={logo}
             className="d-inline-block align-top"
             alt="p"
           /> {' '}
-            Petfindr
+            PetFindr
           </Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link href="/home">Home</Nav.Link>
             <Nav.Link href="/create">Make a Post</Nav.Link>
           </Nav>
+          
+          <img src={ghLogo} className="justify-content-end" alt="gh" onClick={() => window.location.href = "https://github.com/jackycao7/PetFindr"} style={{cursor:'pointer'}} />
         </Navbar>
 
         <Switch>
