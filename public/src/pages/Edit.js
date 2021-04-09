@@ -61,7 +61,6 @@ export default function Edit() {
         return null;
     }
     else {
-      
         // console.log("missing attributes function", postObj);
         return postObj;
     }
